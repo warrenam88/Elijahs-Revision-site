@@ -1,0 +1,2378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Year 7-8 worksheets for Mathematics, English, and Science with randomized questions and instant feedback">
+    <meta name="keywords" content="education, worksheets, year 7, year 8, maths, english, science, interactive learning">
+    <title>Interactive Year 7-8 Worksheets - Adaptive Learning Platform</title>
+    
+    <!-- Preconnect to improve performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <style>
+        /* CSS Reset and Base Styles */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Color palette for easy maintenance */
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --maths-color: #3498db;
+            --english-color: #e74c3c;
+            --science-color: #27ae60;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --light-gray: #f8f9fa;
+            --medium-gray: #dee2e6;
+            --dark-gray: #495057;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 5px 15px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.2);
+            --border-radius: 10px;
+            --transition-speed: 0.3s;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Container Styles */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Header Styles */
+        .header {
+            background: var(--primary-gradient);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: var(--light-gray);
+            border-bottom: 3px solid var(--medium-gray);
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--medium-gray) var(--light-gray);
+        }
+        
+        .nav-tabs::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .nav-tabs::-webkit-scrollbar-track {
+            background: var(--light-gray);
+        }
+        
+        .nav-tabs::-webkit-scrollbar-thumb {
+            background: var(--medium-gray);
+            border-radius: 4px;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all var(--transition-speed);
+            white-space: nowrap;
+            position: relative;
+        }
+        
+        .nav-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            transition: background var(--transition-speed);
+        }
+        
+        .nav-tab:hover {
+            background: var(--medium-gray);
+        }
+        
+        .nav-tab:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: -2px;
+        }
+        
+        .nav-tab.active {
+            color: var(--white);
+        }
+        
+        .nav-tab.maths.active { 
+            background: var(--maths-color); 
+        }
+        .nav-tab.maths.active::after { 
+            background: var(--maths-color); 
+        }
+        
+        .nav-tab.english.active { 
+            background: var(--english-color); 
+        }
+        .nav-tab.english.active::after { 
+            background: var(--english-color); 
+        }
+        
+        .nav-tab.science.active { 
+            background: var(--science-color); 
+        }
+        .nav-tab.science.active::after { 
+            background: var(--science-color); 
+        }
+        
+        /* Content Area */
+        .content {
+            padding: 30px;
+        }
+        
+        /* Subject Sections */
+        .subject-section {
+            display: none;
+        }
+        
+        .subject-section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        /* Settings Bar */
+        .settings-bar {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .setting-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .setting-group label {
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+        
+        .setting-group select, 
+        .setting-group input {
+            padding: 8px 12px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color var(--transition-speed);
+        }
+        
+        .setting-group select:focus, 
+        .setting-group input:focus {
+            outline: none;
+            border-color: var(--maths-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        /* Difficulty Selector */
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .diff-btn {
+            padding: 10px 30px;
+            border: 2px solid var(--medium-gray);
+            background: var(--white);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .diff-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .diff-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .diff-btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .diff-btn.active.easy { 
+            background: var(--success-color); 
+            color: var(--white); 
+            border-color: var(--success-color); 
+        }
+        
+        .diff-btn.active.medium { 
+            background: var(--warning-color); 
+            color: var(--white); 
+            border-color: var(--warning-color); 
+        }
+        
+        .diff-btn.active.hard { 
+            background: var(--danger-color); 
+            color: var(--white); 
+            border-color: var(--danger-color); 
+        }
+        
+        .diff-btn.active.mixed { 
+            background: var(--primary-gradient); 
+            color: var(--white); 
+            border-color: #667eea; 
+        }
+        
+        /* Question Container */
+        .question-container {
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+            position: relative;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        
+        .question-container:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .question-number {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--white);
+            padding: 2px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            color: #007bff;
+            border: 2px solid #007bff;
+            font-size: 0.9rem;
+        }
+        
+        .question-container.maths { 
+            border-left-color: var(--maths-color); 
+        }
+        .question-container.maths .question-number { 
+            color: var(--maths-color); 
+            border-color: var(--maths-color); 
+        }
+        
+        .question-container.english { 
+            border-left-color: var(--english-color); 
+        }
+        .question-container.english .question-number { 
+            color: var(--english-color); 
+            border-color: var(--english-color); 
+        }
+        
+        .question-container.science { 
+            border-left-color: var(--science-color); 
+        }
+        .question-container.science .question-number { 
+            color: var(--science-color); 
+            border-color: var(--science-color); 
+        }
+        
+        .question {
+            margin-bottom: 15px;
+            margin-top: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        
+        /* Input Fields */
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all var(--transition-speed);
+            background: var(--white);
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+        
+        .answer-input.correct {
+            border-color: var(--success-color);
+            background: #d4edda;
+            animation: correctPulse 0.5s;
+        }
+        
+        .answer-input.incorrect {
+            border-color: var(--danger-color);
+            background: #f8d7da;
+            animation: incorrectShake 0.5s;
+        }
+        
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        /* MCQ Options */
+        .mcq-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .mcq-option {
+            padding: 12px;
+            background: var(--white);
+            border: 2px solid var(--medium-gray);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mcq-option::before {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .mcq-option:hover {
+            background: #f1f3f5;
+            transform: translateX(5px);
+        }
+        
+        .mcq-option:hover::before {
+            left: 100%;
+        }
+        
+        .mcq-option.selected {
+            background: #007bff;
+            color: var(--white);
+            border-color: #007bff;
+        }
+        
+        .mcq-option.correct {
+            background: var(--success-color);
+            color: var(--white);
+            border-color: var(--success-color);
+            animation: correctPulse 0.5s;
+        }
+        
+        .mcq-option.incorrect {
+            background: var(--danger-color);
+            color: var(--white);
+            border-color: var(--danger-color);
+            animation: incorrectShake 0.5s;
+        }
+        
+        /* Feedback Messages */
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            font-weight: 500;
+        }
+        
+        .feedback.show {
+            display: block;
+            animation: slideDown 0.3s;
+        }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0; 
+                max-height: 0; 
+            }
+            to { 
+                opacity: 1; 
+                max-height: 100px; 
+            }
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Control Buttons */
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-generate {
+            background: var(--primary-gradient);
+            color: var(--white);
+        }
+        
+        .btn-check {
+            background: var(--success-color);
+            color: var(--white);
+        }
+        
+        .btn-reset {
+            background: #6c757d;
+            color: var(--white);
+        }
+        
+        .btn-show {
+            background: var(--info-color);
+            color: var(--white);
+        }
+        
+        /* Score Display */
+        .score-display {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: var(--white);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .score-display.show {
+            display: block;
+            animation: bounceIn 0.5s;
+        }
+        
+        @keyframes bounceIn {
+            0% { 
+                transform: scale(0.3); 
+                opacity: 0; 
+            }
+            50% { 
+                transform: scale(1.05); 
+            }
+            70% { 
+                transform: scale(0.9); 
+            }
+            100% { 
+                transform: scale(1); 
+                opacity: 1; 
+            }
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: var(--medium-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        /* Timer */
+        .timer {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+            padding: 10px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Achievement Badge */
+        .achievement {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255,215,0,0.5);
+        }
+        
+        .achievement.show {
+            display: block;
+            animation: tada 1s;
+        }
+        
+        @keyframes tada {
+            0% { transform: scale(1); }
+            10%, 20% { transform: scale(0.9) rotate(-3deg); }
+            30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
+            40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+        
+        /* Hint Button and Display */
+        .hint-btn {
+            background: var(--warning-color);
+            color: #333;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            transition: all var(--transition-speed);
+        }
+        
+        .hint-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .hint {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+            border: 1px solid #ffeeba;
+            animation: slideDown 0.3s;
+        }
+        
+        .hint.show {
+            display: block;
+        }
+        
+        /* Stats Display */
+        .stats-display {
+            background: var(--light-gray);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--medium-gray);
+            transition: all var(--transition-speed);
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--maths-color);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--dark-gray);
+        }
+        
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid var(--medium-gray);
+            border-top: 3px solid var(--maths-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Accessibility Improvements */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Focus visible for keyboard navigation */
+        *:focus-visible {
+            outline: 3px solid var(--maths-color);
+            outline-offset: 2px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .nav-tab::after {
+                display: none;
+            }
+            
+            .difficulty-selector {
+                flex-direction: column;
+            }
+            
+            .diff-btn {
+                width: 100%;
+            }
+            
+            .settings-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .setting-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .stats-display {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .header {
+                background: none;
+                color: black;
+                border-bottom: 2px solid black;
+            }
+            
+            .nav-tabs,
+            .settings-bar,
+            .controls,
+            .timer,
+            .progress-bar,
+            .hint-btn {
+                display: none;
+            }
+            
+            .question-container {
+                page-break-inside: avoid;
+                border: 1px solid black;
+                margin-bottom: 15px;
+            }
+            
+            .feedback,
+            .achievement,
+            .score-display,
+            .stats-display {
+                display: none !important;
+            }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --light-gray: #2c2c2c;
+                --medium-gray: #444;
+                --dark-gray: #ccc;
+                --white: #1a1a1a;
+            }
+            
+            body {
+                color: #e0e0e0;
+            }
+            
+            .container {
+                background: #2a2a2a;
+            }
+            
+            .question {
+                color: #e0e0e0;
+            }
+            
+            .answer-input {
+                background: #333;
+                color: #e0e0e0;
+            }
+            
+            .mcq-option {
+                background: #333;
+                color: #e0e0e0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header" role="banner">
+            <h1>Interactive Year 7-8 Worksheets</h1>
+            <p>Unlimited practice with randomized questions!</p>
+        </header>
+        
+        <nav class="nav-tabs" role="navigation" aria-label="Subject selection">
+            <button class="nav-tab maths active" onclick="switchSubject('maths', this)" aria-pressed="true" aria-label="Mathematics">Mathematics</button>
+            <button class="nav-tab english" onclick="switchSubject('english', this)" aria-pressed="false" aria-label="English">English</button>
+            <button class="nav-tab science" onclick="switchSubject('science', this)" aria-pressed="false" aria-label="Science">Science</button>
+        </nav>
+        
+        <main class="content" role="main">
+            <div class="settings-bar" role="group" aria-label="Quiz settings">
+                <div class="setting-group">
+                    <label for="numQuestions">Questions:</label>
+                    <input type="number" id="numQuestions" min="1" max="10" value="10" aria-label="Number of questions">
+                </div>
+                <div class="setting-group">
+                    <label for="timerMode">Timer:</label>
+                    <select id="timerMode" aria-label="Timer mode">
+                        <option value="practice">Practice Mode</option>
+                        <option value="timed">Timed (1 min/question)</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="hintsEnabled">Hints:</label>
+                    <select id="hintsEnabled" aria-label="Enable hints">
+                        <option value="yes">Enabled</option>
+                        <option value="no">Disabled</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="loading" id="loading" aria-live="polite">
+                <div class="spinner"></div>
+                <p>Loading questions...</p>
+            </div>
+            
+            <div class="timer" id="timer" role="timer" aria-live="polite">Time: 00:00</div>
+            
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill" id="progress">0%</div>
+            </div>
+            
+            <!-- Mathematics Section -->
+            <section id="maths" class="subject-section active" aria-label="Mathematics questions">
+                <div class="difficulty-selector" role="group" aria-label="Difficulty selection">
+                    <button class="diff-btn easy active" onclick="switchDifficulty('maths', 'easy', this)" aria-pressed="true">Easy</button>
+                    <button class="diff-btn medium" onclick="switchDifficulty('maths', 'medium', this)" aria-pressed="false">Medium</button>
+                    <button class="diff-btn hard" onclick="switchDifficulty('maths', 'hard', this)" aria-pressed="false">Hard</button>
+                    <button class="diff-btn mixed" onclick="switchDifficulty('maths', 'mixed', this)" aria-pressed="false">Mixed</button>
+                </div>
+                
+                <div id="maths-questions" role="list" aria-label="Mathematics questions"></div>
+            </section>
+            
+            <!-- English Section -->
+            <section id="english" class="subject-section" aria-label="English questions">
+                <div class="difficulty-selector" role="group" aria-label="Difficulty selection">
+                    <button class="diff-btn easy active" onclick="switchDifficulty('english', 'easy', this)" aria-pressed="true">Easy</button>
+                    <button class="diff-btn medium" onclick="switchDifficulty('english', 'medium', this)" aria-pressed="false">Medium</button>
+                    <button class="diff-btn hard" onclick="switchDifficulty('english', 'hard', this)" aria-pressed="false">Hard</button>
+                    <button class="diff-btn mixed" onclick="switchDifficulty('english', 'mixed', this)" aria-pressed="false">Mixed</button>
+                </div>
+                
+                <div id="english-questions" role="list" aria-label="English questions"></div>
+            </section>
+            
+            <!-- Science Section -->
+            <section id="science" class="subject-section" aria-label="Science questions">
+                <div class="difficulty-selector" role="group" aria-label="Difficulty selection">
+                    <button class="diff-btn easy active" onclick="switchDifficulty('science', 'easy', this)" aria-pressed="true">Easy</button>
+                    <button class="diff-btn medium" onclick="switchDifficulty('science', 'medium', this)" aria-pressed="false">Medium</button>
+                    <button class="diff-btn hard" onclick="switchDifficulty('science', 'hard', this)" aria-pressed="false">Hard</button>
+                    <button class="diff-btn mixed" onclick="switchDifficulty('science', 'mixed', this)" aria-pressed="false">Mixed</button>
+                </div>
+                
+                <div id="science-questions" role="list" aria-label="Science questions"></div>
+            </section>
+            
+            <div class="controls" role="group" aria-label="Quiz controls">
+                <button class="btn btn-generate" onclick="generateNewQuestions()" aria-label="Generate new questions">
+                    <span aria-hidden="true">🎲</span> New Questions
+                </button>
+                <button class="btn btn-check" onclick="checkAnswers()" aria-label="Check your answers">
+                    <span aria-hidden="true">✓</span> Check Answers
+                </button>
+                <button class="btn btn-reset" onclick="resetQuiz()" aria-label="Reset current quiz">
+                    <span aria-hidden="true">↺</span> Reset
+                </button>
+                <button class="btn btn-show" onclick="showAllAnswers()" aria-label="Show all answers">
+                    <span aria-hidden="true">👁</span> Show Answers
+                </button>
+            </div>
+            
+            <div class="score-display" id="scoreDisplay" role="alert" aria-live="assertive"></div>
+            <div class="achievement" id="achievement" role="status" aria-live="polite"></div>
+            
+            <div class="stats-display" id="statsDisplay" style="display: none;" role="complementary" aria-label="Statistics">
+                <div class="stat-item">
+                    <div class="stat-label">Total Attempted</div>
+                    <div class="stat-value" id="totalAttempted">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Average Score</div>
+                    <div class="stat-value" id="avgScore">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Best Score</div>
+                    <div class="stat-value" id="bestScore">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Current Streak</div>
+                    <div class="stat-value" id="streak">0</div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        'use strict';
+        
+        // Enhanced question bank with better variety and validation
+        const questionBank = {
+            maths: {
+                easy: [
+                    // Basic Addition (varied numbers for better randomization)
+                    { type: 'input', question: 'Calculate: 245 + 378', answer: '623', hint: 'Add units, tens, then hundreds' },
+                    { type: 'input', question: 'Calculate: 567 + 234', answer: '801', hint: 'Remember to carry over when needed' },
+                    { type: 'input', question: 'Calculate: 189 + 456', answer: '645', hint: 'Line up the place values' },
+                    { type: 'input', question: 'Calculate: 789 + 123', answer: '912', hint: 'Add column by column' },
+                    { type: 'input', question: 'Calculate: 456 + 789', answer: '1245', hint: 'Don\'t forget to carry' },
+                    { type: 'input', question: 'Calculate: 234 + 567', answer: '801', hint: 'Start from the right' },
+                    { type: 'input', question: 'Calculate: 678 + 234', answer: '912', hint: 'Add each column' },
+                    { type: 'input', question: 'Calculate: 345 + 678', answer: '1023', hint: 'Carry when needed' },
+                    { type: 'input', question: 'Calculate: 123 + 789', answer: '912', hint: 'Add units first' },
+                    { type: 'input', question: 'Calculate: 567 + 345', answer: '912', hint: 'Work left to right' },
+                    
+                    // More Addition (varied numbers)
+                    { type: 'input', question: 'Calculate: 456 + 123', answer: '579', hint: 'No carrying needed' },
+                    { type: 'input', question: 'Calculate: 789 + 234', answer: '1023', hint: 'Carry to thousands' },
+                    { type: 'input', question: 'Calculate: 345 + 567', answer: '912', hint: 'Carry to hundreds' },
+                    { type: 'input', question: 'Calculate: 678 + 345', answer: '1023', hint: 'Carry to thousands' },
+                    { type: 'input', question: 'Calculate: 234 + 456', answer: '690', hint: 'No carrying needed' },
+                    { type: 'input', question: 'Calculate: 567 + 789', answer: '1356', hint: 'Carry to thousands' },
+                    { type: 'input', question: 'Calculate: 123 + 456', answer: '579', hint: 'Simple addition' },
+                    { type: 'input', question: 'Calculate: 789 + 567', answer: '1356', hint: 'Carry to thousands' },
+                    { type: 'input', question: 'Calculate: 345 + 234', answer: '579', hint: 'No carrying needed' },
+                    { type: 'input', question: 'Calculate: 678 + 789', answer: '1467', hint: 'Carry to thousands' },
+                    
+                    // Basic Subtraction (varied numbers)
+                    { type: 'input', question: 'Calculate: 892 - 456', answer: '436', hint: 'Borrow from the next column if needed' },
+                    { type: 'input', question: 'Calculate: 700 - 285', answer: '415', hint: 'You\'ll need to borrow twice' },
+                    { type: 'input', question: 'Calculate: 543 - 267', answer: '276', hint: 'Borrow when top digit is smaller' },
+                    { type: 'input', question: 'Calculate: 800 - 456', answer: '344', hint: 'Borrow from hundreds' },
+                    { type: 'input', question: 'Calculate: 675 - 289', answer: '386', hint: 'Check your borrowing' },
+                    { type: 'input', question: 'Calculate: 934 - 567', answer: '367', hint: 'Work column by column' },
+                    { type: 'input', question: 'Calculate: 600 - 234', answer: '366', hint: 'Borrow carefully' },
+                    { type: 'input', question: 'Calculate: 456 - 189', answer: '267', hint: 'Start from the right' },
+                    { type: 'input', question: 'Calculate: 789 - 345', answer: '444', hint: 'No borrowing needed here' },
+                    { type: 'input', question: 'Calculate: 500 - 167', answer: '333', hint: 'Borrow from the hundreds' },
+                    
+                    // More Subtraction (varied numbers)
+                    { type: 'input', question: 'Calculate: 654 - 321', answer: '333', hint: 'No borrowing needed' },
+                    { type: 'input', question: 'Calculate: 987 - 654', answer: '333', hint: 'No borrowing needed' },
+                    { type: 'input', question: 'Calculate: 432 - 198', answer: '234', hint: 'Borrow from tens' },
+                    { type: 'input', question: 'Calculate: 876 - 543', answer: '333', hint: 'No borrowing needed' },
+                    { type: 'input', question: 'Calculate: 321 - 187', answer: '134', hint: 'Borrow from hundreds' },
+                    { type: 'input', question: 'Calculate: 765 - 432', answer: '333', hint: 'No borrowing needed' },
+                    { type: 'input', question: 'Calculate: 543 - 298', answer: '245', hint: 'Borrow from tens' },
+                    { type: 'input', question: 'Calculate: 654 - 321', answer: '333', hint: 'Simple subtraction' },
+                    { type: 'input', question: 'Calculate: 987 - 654', answer: '333', hint: 'No borrowing needed' },
+                    { type: 'input', question: 'Calculate: 432 - 198', answer: '234', hint: 'Borrow from tens' },
+                    
+                    // Basic Multiplication (varied numbers)
+                    { type: 'input', question: 'Calculate: 45 × 11', answer: '495', hint: 'Quick trick: 4_(4+5)_5 = 495' },
+                    { type: 'input', question: 'Calculate: 34 × 12', answer: '408', hint: '34×10 + 34×2' },
+                    { type: 'input', question: 'Calculate: 23 × 15', answer: '345', hint: '23×10 + 23×5' },
+                    { type: 'input', question: 'Calculate: 56 × 11', answer: '616', hint: '5_(5+6)_6' },
+                    { type: 'input', question: 'Calculate: 27 × 13', answer: '351', hint: '27×10 + 27×3' },
+                    { type: 'input', question: 'Calculate: 18 × 14', answer: '252', hint: '18×10 + 18×4' },
+                    { type: 'input', question: 'Calculate: 35 × 12', answer: '420', hint: '35×10 + 35×2' },
+                    { type: 'input', question: 'Calculate: 42 × 11', answer: '462', hint: '4_(4+2)_2' },
+                    { type: 'input', question: 'Calculate: 29 × 15', answer: '435', hint: '29×10 + 29×5' },
+                    { type: 'input', question: 'Calculate: 67 × 11', answer: '737', hint: '6_(6+7)_7 = 6_13_7 = 737' },
+                    
+                    // More Multiplication (varied numbers)
+                    { type: 'input', question: 'Calculate: 16 × 12', answer: '192', hint: '16×10 + 16×2' },
+                    { type: 'input', question: 'Calculate: 25 × 13', answer: '325', hint: '25×10 + 25×3' },
+                    { type: 'input', question: 'Calculate: 38 × 11', answer: '418', hint: '3_(3+8)_8' },
+                    { type: 'input', question: 'Calculate: 47 × 12', answer: '564', hint: '47×10 + 47×2' },
+                    { type: 'input', question: 'Calculate: 19 × 14', answer: '266', hint: '19×10 + 19×4' },
+                    { type: 'input', question: 'Calculate: 33 × 15', answer: '495', hint: '33×10 + 33×5' },
+                    { type: 'input', question: 'Calculate: 26 × 11', answer: '286', hint: '2_(2+6)_6' },
+                    { type: 'input', question: 'Calculate: 41 × 13', answer: '533', hint: '41×10 + 41×3' },
+                    { type: 'input', question: 'Calculate: 37 × 12', answer: '444', hint: '37×10 + 37×2' },
+                    { type: 'input', question: 'Calculate: 28 × 15', answer: '420', hint: '28×10 + 28×5' },
+                    
+                    // Basic Division (varied numbers)
+                    { type: 'input', question: 'Calculate: 156 ÷ 12', answer: '13', hint: 'How many 12s in 156?' },
+                    { type: 'input', question: 'Calculate: 225 ÷ 15', answer: '15', hint: 'Think: 15 × ? = 225' },
+                    { type: 'input', question: 'Calculate: 168 ÷ 14', answer: '12', hint: '14 × 12 = 168' },
+                    { type: 'input', question: 'Calculate: 195 ÷ 13', answer: '15', hint: '13 × 15 = 195' },
+                    { type: 'input', question: 'Calculate: 144 ÷ 16', answer: '9', hint: '16 × 9 = 144' },
+                    { type: 'input', question: 'Calculate: 182 ÷ 13', answer: '14', hint: '13 × 14 = 182' },
+                    { type: 'input', question: 'Calculate: 204 ÷ 12', answer: '17', hint: '12 × 17 = 204' },
+                    { type: 'input', question: 'Calculate: 216 ÷ 18', answer: '12', hint: '18 × 12 = 216' },
+                    { type: 'input', question: 'Calculate: 171 ÷ 19', answer: '9', hint: '19 × 9 = 171' },
+                    { type: 'input', question: 'Calculate: 238 ÷ 14', answer: '17', hint: '14 × 17 = 238' },
+                    
+                    // More Division (varied numbers)
+                    { type: 'input', question: 'Calculate: 132 ÷ 11', answer: '12', hint: '11 × 12 = 132' },
+                    { type: 'input', question: 'Calculate: 175 ÷ 25', answer: '7', hint: '25 × 7 = 175' },
+                    { type: 'input', question: 'Calculate: 192 ÷ 16', answer: '12', hint: '16 × 12 = 192' },
+                    { type: 'input', question: 'Calculate: 210 ÷ 21', answer: '10', hint: '21 × 10 = 210' },
+                    { type: 'input', question: 'Calculate: 128 ÷ 16', answer: '8', hint: '16 × 8 = 128' },
+                    { type: 'input', question: 'Calculate: 165 ÷ 15', answer: '11', hint: '15 × 11 = 165' },
+                    { type: 'input', question: 'Calculate: 144 ÷ 12', answer: '12', hint: '12 × 12 = 144' },
+                    { type: 'input', question: 'Calculate: 189 ÷ 21', answer: '9', hint: '21 × 9 = 189' },
+                    { type: 'input', question: 'Calculate: 200 ÷ 25', answer: '8', hint: '25 × 8 = 200' },
+                    { type: 'input', question: 'Calculate: 176 ÷ 16', answer: '11', hint: '16 × 11 = 176' },
+                    
+                    // Rounding (varied numbers)
+                    { type: 'input', question: 'Round 3,845 to the nearest hundred', answer: '3800', hint: 'Look at the tens digit (4)' },
+                    { type: 'input', question: 'Round 56.89 to one decimal place', answer: '56.9', hint: 'Look at the hundredths place' },
+                    { type: 'input', question: 'Round 4,567 to the nearest hundred', answer: '4600', hint: 'Look at the tens digit' },
+                    { type: 'input', question: 'Round 23.67 to one decimal place', answer: '23.7', hint: 'Look at the second decimal' },
+                    { type: 'input', question: 'Round 3,845 to the nearest hundred', answer: '3800', hint: 'Look at the tens digit (4)' },
+                    { type: 'input', question: 'Round 56.89 to one decimal place', answer: '56.9', hint: 'Look at the hundredths place' },
+                    { type: 'input', question: 'Round 7,234 to the nearest thousand', answer: '7000', hint: 'Look at the hundreds digit' },
+                    { type: 'input', question: 'Round 12.345 to two decimal places', answer: '12.35', hint: 'Look at the third decimal' },
+                    { type: 'input', question: 'Round 8,976 to the nearest hundred', answer: '9000', hint: 'Look at the tens digit (7)' },
+                    { type: 'input', question: 'Round 45.678 to one decimal place', answer: '45.7', hint: 'Look at the hundredths place' },
+                    
+                    // Fractions to Decimals (varied fractions)
+                    { type: 'input', question: 'Convert 1/8 to a decimal', answer: '0.125', hint: '1 ÷ 8 = ?' },
+                    { type: 'input', question: 'Convert 3/5 to a decimal', answer: '0.6', hint: '3 ÷ 5 = ?' },
+                    { type: 'input', question: 'Convert 3/4 to a decimal', answer: '0.75', hint: '3 ÷ 4 = ?' },
+                    { type: 'input', question: 'Convert 2/5 to a decimal', answer: '0.4', hint: '2 ÷ 5 = ?' },
+                    { type: 'input', question: 'Convert 7/10 to a decimal', answer: '0.7', hint: '7 ÷ 10 = ?' },
+                    { type: 'input', question: 'Convert 1/4 to a decimal', answer: '0.25', hint: '1 ÷ 4 = ?' },
+                    { type: 'input', question: 'Convert 9/10 to a decimal', answer: '0.9', hint: '9 ÷ 10 = ?' },
+                    { type: 'input', question: 'Convert 1/2 to a decimal', answer: '0.5', hint: '1 ÷ 2 = ?' },
+                    { type: 'input', question: 'Convert 3/8 to a decimal', answer: '0.375', hint: '3 ÷ 8 = ?' },
+                    { type: 'input', question: 'Convert 4/5 to a decimal', answer: '0.8', hint: '4 ÷ 5 = ?' },
+                    
+                    // Simple Algebra (varied equations)
+                    { type: 'input', question: 'Solve: x - 3 = 9', answer: '12', hint: 'Add 3 to both sides' },
+                    { type: 'input', question: 'Solve: x + 5 = 12', answer: '7', hint: 'Subtract 5 from both sides' },
+                    { type: 'input', question: 'Solve: x + 7 = 15', answer: '8', hint: 'Subtract 7 from both sides' },
+                    { type: 'input', question: 'Solve: x - 6 = 14', answer: '20', hint: 'Add 6 to both sides' },
+                    { type: 'input', question: 'Solve: x + 9 = 23', answer: '14', hint: 'Subtract 9 from both sides' },
+                    { type: 'input', question: 'Solve: x - 8 = 17', answer: '25', hint: 'Add 8 to both sides' },
+                    { type: 'input', question: 'Solve: x + 4 = 19', answer: '15', hint: 'Subtract 4 from both sides' },
+                    { type: 'input', question: 'Solve: x - 5 = 11', answer: '16', hint: 'Add 5 to both sides' },
+                    { type: 'input', question: 'Solve: x + 12 = 28', answer: '16', hint: 'Subtract 12 from both sides' },
+                    { type: 'input', question: 'Solve: x - 9 = 16', answer: '25', hint: 'Add 9 to both sides' },
+                    
+                    // Percentages (varied amounts)
+                    { type: 'input', question: 'Find 50% of 180', answer: '90', hint: '50% is half' },
+                    { type: 'input', question: 'Find 25% of 200', answer: '50', hint: '25% is one quarter' },
+                    { type: 'input', question: 'Find 10% of 350', answer: '35', hint: '10% is one tenth' },
+                    { type: 'input', question: 'Find 20% of 150', answer: '30', hint: '20% is one fifth' },
+                    { type: 'input', question: 'Find 75% of 120', answer: '90', hint: '75% is three quarters' },
+                    { type: 'input', question: 'Find 30% of 200', answer: '60', hint: '30% = 3 × 10%' },
+                    { type: 'input', question: 'Find 40% of 250', answer: '100', hint: '40% = 4 × 10%' },
+                    { type: 'input', question: 'Find 60% of 150', answer: '90', hint: '60% = 6 × 10%' },
+                    { type: 'input', question: 'Find 80% of 175', answer: '140', hint: '80% = 8 × 10%' },
+                    { type: 'input', question: 'Find 90% of 120', answer: '108', hint: '90% = 9 × 10%' },
+                    
+                    // Basic Geometry (varied shapes)
+                    { type: 'input', question: 'Perimeter of a rectangle 6cm × 9cm', answer: '30', hint: '2 × (length + width)' },
+                    { type: 'input', question: 'Perimeter of a square with side 8cm', answer: '32', hint: '4 × side length' },
+                    { type: 'input', question: 'Area of a rectangle 5cm × 7cm', answer: '35', hint: 'length × width' },
+                    { type: 'input', question: 'Perimeter of a square with side 12cm', answer: '48', hint: '4 × side length' },
+                    { type: 'input', question: 'Area of a square with side 9cm', answer: '81', hint: 'side × side' },
+                    { type: 'input', question: 'Perimeter of a rectangle 4cm × 11cm', answer: '30', hint: '2 × (4 + 11)' },
+                    { type: 'input', question: 'Area of a rectangle 8cm × 6cm', answer: '48', hint: 'length × width' },
+                    { type: 'input', question: 'Perimeter of a square with side 15cm', answer: '60', hint: '4 × 15' },
+                    { type: 'input', question: 'Area of a square with side 11cm', answer: '121', hint: '11 × 11' },
+                    { type: 'input', question: 'Perimeter of a rectangle 7cm × 5cm', answer: '24', hint: '2 × (7 + 5)' },
+                    
+                    // Times Tables (varied combinations)
+                    { type: 'input', question: 'Calculate: 7 × 8', answer: '56', hint: 'Seven eights' },
+                    { type: 'input', question: 'Calculate: 9 × 6', answer: '54', hint: 'Nine sixes' },
+                    { type: 'input', question: 'Calculate: 8 × 7', answer: '56', hint: 'Eight sevens' },
+                    { type: 'input', question: 'Calculate: 6 × 9', answer: '54', hint: 'Six nines' },
+                    { type: 'input', question: 'Calculate: 7 × 9', answer: '63', hint: 'Seven nines' },
+                    { type: 'input', question: 'Calculate: 8 × 9', answer: '72', hint: 'Eight nines' },
+                    { type: 'input', question: 'Calculate: 6 × 7', answer: '42', hint: 'Six sevens' },
+                    { type: 'input', question: 'Calculate: 8 × 6', answer: '48', hint: 'Eight sixes' },
+                    { type: 'input', question: 'Calculate: 9 × 9', answer: '81', hint: 'Nine nines' },
+                    { type: 'input', question: 'Calculate: 7 × 7', answer: '49', hint: 'Seven sevens' }
+                ],
+                medium: [
+                    // Multi-digit Multiplication (varied numbers)
+                    { type: 'input', question: 'Calculate: 467 × 23', answer: '10741', hint: '467×20 + 467×3' },
+                    { type: 'input', question: 'Calculate: 234 × 56', answer: '13104', hint: '234×50 + 234×6' },
+                    { type: 'input', question: 'Calculate: 189 × 34', answer: '6426', hint: '189×30 + 189×4' },
+                    { type: 'input', question: 'Calculate: 345 × 27', answer: '9315', hint: '345×20 + 345×7' },
+                    { type: 'input', question: 'Calculate: 678 × 45', answer: '30510', hint: '678×40 + 678×5' },
+                    { type: 'input', question: 'Calculate: 123 × 89', answer: '10947', hint: '123×80 + 123×9' },
+                    { type: 'input', question: 'Calculate: 456 × 32', answer: '14592', hint: '456×30 + 456×2' },
+                    { type: 'input', question: 'Calculate: 789 × 67', answer: '52863', hint: '789×60 + 789×7' },
+                    { type: 'input', question: 'Calculate: 234 × 78', answer: '18252', hint: '234×70 + 234×8' },
+                    { type: 'input', question: 'Calculate: 567 × 43', answer: '24381', hint: '567×40 + 567×3' },
+                    
+                    // Long Division (varied numbers)
+                    { type: 'input', question: 'Calculate: 3,456 ÷ 16', answer: '216', hint: 'Long division needed' },
+                    { type: 'input', question: 'Calculate: 2,574 ÷ 18', answer: '143', hint: 'How many 18s in 2574?' },
+                    { type: 'input', question: 'Calculate: 4,368 ÷ 24', answer: '182', hint: 'Use long division' },
+                    { type: 'input', question: 'Calculate: 5,292 ÷ 36', answer: '147', hint: 'Divide step by step' },
+                    { type: 'input', question: 'Calculate: 3,192 ÷ 28', answer: '114', hint: 'Long division method' },
+                    { type: 'input', question: 'Calculate: 4,536 ÷ 42', answer: '108', hint: 'How many 42s in 4536?' },
+                    { type: 'input', question: 'Calculate: 2,835 ÷ 27', answer: '105', hint: 'Use division algorithm' },
+                    { type: 'input', question: 'Calculate: 3,724 ÷ 34', answer: '109.5', hint: 'May have remainder' },
+                    { type: 'input', question: 'Calculate: 4,158 ÷ 39', answer: '106.6', hint: 'Round to 1 decimal' },
+                    { type: 'input', question: 'Calculate: 5,040 ÷ 45', answer: '112', hint: 'Exact division' },
+                    
+                    // Fraction Operations (varied fractions)
+                    { type: 'input', question: 'Calculate: 2/3 + 5/6 (as decimal)', answer: '1.5', hint: 'Common denominator is 6' },
+                    { type: 'input', question: 'Calculate: 3/4 + 1/8 (as decimal)', answer: '0.875', hint: 'Common denominator is 8' },
+                    { type: 'input', question: 'Calculate: 5/6 - 1/3 (as decimal)', answer: '0.5', hint: 'Common denominator is 6' },
+                    { type: 'input', question: 'Calculate: 7/8 - 1/4 (as decimal)', answer: '0.625', hint: 'Common denominator is 8' },
+                    { type: 'input', question: 'Calculate: 2/5 + 3/10 (as decimal)', answer: '0.7', hint: 'Common denominator is 10' },
+                    { type: 'input', question: 'Calculate: 3/4 × 2/3 (as decimal)', answer: '0.5', hint: 'Multiply numerators and denominators' },
+                    { type: 'input', question: 'Calculate: 5/8 × 4/5 (as decimal)', answer: '0.5', hint: 'Simplify before multiplying' },
+                    { type: 'input', question: 'Calculate: 2/3 ÷ 1/6 (as whole number)', answer: '4', hint: 'Multiply by reciprocal' },
+                    { type: 'input', question: 'Calculate: 3/4 ÷ 3/8 (as whole number)', answer: '2', hint: 'Flip and multiply' },
+                    { type: 'input', question: 'Calculate: 5/6 + 2/9 (as decimal)', answer: '1.056', hint: 'Common denominator is 18' },
+                    
+                    // Intermediate Algebra (varied equations)
+                    { type: 'input', question: 'Solve: 3x + 7 = 22', answer: '5', hint: 'Subtract 7, then divide by 3' },
+                    { type: 'input', question: 'Solve: 2x - 5 = 13', answer: '9', hint: 'Add 5, then divide by 2' },
+                    { type: 'input', question: 'Solve: 4x + 12 = 36', answer: '6', hint: 'Subtract 12, then divide by 4' },
+                    { type: 'input', question: 'Solve: 5x - 8 = 27', answer: '7', hint: 'Add 8, then divide by 5' },
+                    { type: 'input', question: 'Solve: 3x + 15 = 42', answer: '9', hint: 'Subtract 15, then divide by 3' },
+                    { type: 'input', question: 'Solve: 6x - 18 = 30', answer: '8', hint: 'Add 18, then divide by 6' },
+                    { type: 'input', question: 'Solve: 2x + 9 = 25', answer: '8', hint: 'Subtract 9, then divide by 2' },
+                    { type: 'input', question: 'Solve: 4x - 7 = 21', answer: '7', hint: 'Add 7, then divide by 4' },
+                    { type: 'input', question: 'Solve: 5x + 6 = 31', answer: '5', hint: 'Subtract 6, then divide by 5' },
+                    { type: 'input', question: 'Solve: 7x - 14 = 35', answer: '7', hint: 'Add 14, then divide by 7' },
+                    
+                    // Ratios and Proportions (varied scenarios)
+                    { type: 'input', question: 'Share £120 in ratio 2:3:5 - largest share?', answer: '60', hint: 'Total parts = 10' },
+                    { type: 'input', question: 'Share £180 in ratio 1:2:3 - middle share?', answer: '60', hint: 'Total parts = 6' },
+                    { type: 'input', question: 'Share £240 in ratio 3:5:4 - smallest share?', answer: '60', hint: 'Total parts = 12' },
+                    { type: 'input', question: 'Share £150 in ratio 2:3 - larger share?', answer: '90', hint: 'Total parts = 5' },
+                    { type: 'input', question: 'Share £280 in ratio 3:4:7 - largest share?', answer: '140', hint: 'Total parts = 14' },
+                    { type: 'input', question: 'Share £360 in ratio 2:4:6 - middle share?', answer: '120', hint: 'Total parts = 12' },
+                    { type: 'input', question: 'Share £200 in ratio 1:4 - smaller share?', answer: '40', hint: 'Total parts = 5' },
+                    { type: 'input', question: 'Share £450 in ratio 2:3:4 - largest share?', answer: '200', hint: 'Total parts = 9' },
+                    { type: 'input', question: 'Share £300 in ratio 5:7 - larger share?', answer: '175', hint: 'Total parts = 12' },
+                    { type: 'input', question: 'Share £420 in ratio 3:4:5 - middle share?', answer: '140', hint: 'Total parts = 12' },
+                    
+                    // Area and Volume (varied shapes and sizes)
+                    { type: 'input', question: 'Area of circle radius 7cm (π = 3.14)', answer: '153.86', hint: 'πr²' },
+                    { type: 'input', question: 'Volume of cube with side 5cm', answer: '125', hint: 'side³' },
+                    { type: 'input', question: 'Area of circle radius 5cm (π = 3.14)', answer: '78.5', hint: 'π × 5²' },
+                    { type: 'input', question: 'Volume of cube with side 8cm', answer: '512', hint: '8³' },
+                    { type: 'input', question: 'Area of triangle base 12cm, height 8cm', answer: '48', hint: '½ × base × height' },
+                    { type: 'input', question: 'Volume of cuboid 6×4×5cm', answer: '120', hint: 'length × width × height' },
+                    { type: 'input', question: 'Area of circle radius 3cm (π = 3.14)', answer: '28.26', hint: 'π × 3²' },
+                    { type: 'input', question: 'Volume of cube with side 6cm', answer: '216', hint: '6³' },
+                    { type: 'input', question: 'Area of triangle base 10cm, height 6cm', answer: '30', hint: '½ × 10 × 6' },
+                    { type: 'input', question: 'Volume of cuboid 8×3×4cm', answer: '96', hint: '8 × 3 × 4' },
+                    
+                    // Coordinate Geometry (varied coordinates)
+                    { type: 'input', question: 'Midpoint of (2,4) and (8,10)', answer: '(5,7)', hint: 'Average the coordinates' },
+                    { type: 'input', question: 'Midpoint of (0,3) and (6,9)', answer: '(3,6)', hint: '((0+6)/2, (3+9)/2)' },
+                    { type: 'input', question: 'Midpoint of (1,5) and (7,11)', answer: '(4,8)', hint: 'Average x and y separately' },
+                    { type: 'input', question: 'Midpoint of (3,2) and (9,8)', answer: '(6,5)', hint: '((3+9)/2, (2+8)/2)' },
+                    { type: 'input', question: 'Distance between (0,0) and (3,4)', answer: '5', hint: 'Use Pythagoras: √(3²+4²)' },
+                    { type: 'input', question: 'Distance between (1,1) and (4,5)', answer: '5', hint: 'Use Pythagoras: √(3²+4²)' },
+                    { type: 'input', question: 'Distance between (2,3) and (6,7)', answer: '5.66', hint: 'Use Pythagoras: √(4²+4²)' },
+                    { type: 'input', question: 'Midpoint of (5,2) and (11,8)', answer: '(8,5)', hint: '((5+11)/2, (2+8)/2)' },
+                    { type: 'input', question: 'Midpoint of (4,1) and (10,7)', answer: '(7,4)', hint: '((4+10)/2, (1+7)/2)' },
+                    { type: 'input', question: 'Distance between (3,0) and (0,4)', answer: '5', hint: 'Use Pythagoras: √(3²+4²)' },
+                    
+                    // Number Sequences (varied patterns)
+                    { type: 'input', question: 'Next term: 2, 5, 8, 11, ...', answer: '14', hint: 'Going up by 3' },
+                    { type: 'input', question: 'Next term: 3, 7, 11, 15, ...', answer: '19', hint: 'Going up by 4' },
+                    { type: 'input', question: 'Next term: 5, 9, 13, 17, ...', answer: '21', hint: 'Going up by 4' },
+                    { type: 'input', question: 'Next term: 1, 4, 7, 10, ...', answer: '13', hint: 'Going up by 3' },
+                    { type: 'input', question: 'Next term: 6, 11, 16, 21, ...', answer: '26', hint: 'Going up by 5' },
+                    { type: 'input', question: 'Next term: 4, 10, 16, 22, ...', answer: '28', hint: 'Going up by 6' },
+                    { type: 'input', question: 'Next term: 7, 12, 17, 22, ...', answer: '27', hint: 'Going up by 5' },
+                    { type: 'input', question: 'Next term: 9, 15, 21, 27, ...', answer: '33', hint: 'Going up by 6' },
+                    { type: 'input', question: 'Next term: 8, 13, 18, 23, ...', answer: '28', hint: 'Going up by 5' },
+                    { type: 'input', question: 'Next term: 10, 17, 24, 31, ...', answer: '38', hint: 'Going up by 7' },
+                    
+                    // Percentages and Money (real-world applications)
+                    { type: 'input', question: '15% discount on £80 item - final price?', answer: '68', hint: '15% off = 85% of original price' },
+                    { type: 'input', question: '20% VAT on £50 - total cost?', answer: '60', hint: '20% VAT = 120% of original price' },
+                    { type: 'input', question: '30% profit on £40 cost - selling price?', answer: '52', hint: '30% profit = 130% of cost' },
+                    { type: 'input', question: '25% of £240', answer: '60', hint: '25% is one quarter' },
+                    { type: 'input', question: '60% of £150', answer: '90', hint: '60% = 6 × 10%' },
+                    { type: 'input', question: '8% interest on £500 for 1 year', answer: '40', hint: '8% = 0.08 × 500' },
+                    { type: 'input', question: '12% commission on £800 sale', answer: '96', hint: '12% = 0.12 × 800' },
+                    { type: 'input', question: '35% off £120 - savings?', answer: '42', hint: '35% of 120' },
+                    { type: 'input', question: '18% tip on £45 bill', answer: '8.1', hint: '18% = 0.18 × 45' },
+                    { type: 'input', question: '22% tax on £200 income', answer: '44', hint: '22% = 0.22 × 200' },
+                    
+                    // Time and Speed (practical problems)
+                    { type: 'input', question: 'Speed: 60km/h for 2.5 hours - distance?', answer: '150', hint: 'Distance = Speed × Time' },
+                    { type: 'input', question: 'Time: 180km at 45km/h', answer: '4', hint: 'Time = Distance ÷ Speed' },
+                    { type: 'input', question: 'Speed: 400km in 5 hours', answer: '80', hint: 'Speed = Distance ÷ Time' },
+                    { type: 'input', question: 'Distance: 72km/h for 1.25 hours', answer: '90', hint: 'Distance = 72 × 1.25' },
+                    { type: 'input', question: 'Time: 120km at 80km/h', answer: '1.5', hint: 'Time = 120 ÷ 80' },
+                    { type: 'input', question: 'Speed: 150km in 2.5 hours', answer: '60', hint: 'Speed = 150 ÷ 2.5' },
+                    { type: 'input', question: 'Distance: 55km/h for 3.2 hours', answer: '176', hint: 'Distance = 55 × 3.2' },
+                    { type: 'input', question: 'Time: 200km at 100km/h', answer: '2', hint: 'Time = 200 ÷ 100' },
+                    { type: 'input', question: 'Speed: 300km in 4 hours', answer: '75', hint: 'Speed = 300 ÷ 4' },
+                    { type: 'input', question: 'Distance: 65km/h for 2.8 hours', answer: '182', hint: 'Distance = 65 × 2.8' },
+                    
+                    // Perimeter and Area (varied shapes)
+                    { type: 'input', question: 'Perimeter of rectangle 8cm × 12cm', answer: '40', hint: '2 × (length + width)' },
+                    { type: 'input', question: 'Area of rectangle 7cm × 9cm', answer: '63', hint: 'length × width' },
+                    { type: 'input', question: 'Perimeter of square with side 11cm', answer: '44', hint: '4 × side length' },
+                    { type: 'input', question: 'Area of square with side 13cm', answer: '169', hint: 'side × side' },
+                    { type: 'input', question: 'Perimeter of rectangle 5cm × 15cm', answer: '40', hint: '2 × (5 + 15)' },
+                    { type: 'input', question: 'Area of rectangle 6cm × 14cm', answer: '84', hint: '6 × 14' },
+                    { type: 'input', question: 'Perimeter of square with side 16cm', answer: '64', hint: '4 × 16' },
+                    { type: 'input', question: 'Area of square with side 18cm', answer: '324', hint: '18 × 18' },
+                    { type: 'input', question: 'Perimeter of rectangle 9cm × 11cm', answer: '40', hint: '2 × (9 + 11)' },
+                    { type: 'input', question: 'Area of rectangle 10cm × 12cm', answer: '120', hint: '10 × 12' }
+                ],
+                hard: [
+                    // Advanced Algebra (indices and powers)
+                    { type: 'input', question: 'Evaluate: 2⁴ × 2³ ÷ 2⁵', answer: '4', hint: 'Use index laws' },
+                    { type: 'input', question: 'Evaluate: 3² × 3⁴ ÷ 3³', answer: '27', hint: 'Add indices when multiplying, subtract when dividing' },
+                    { type: 'input', question: 'Evaluate: 5³ ÷ 5¹ × 5²', answer: '125', hint: 'Use index laws carefully' },
+                    { type: 'input', question: 'Evaluate: 4⁵ ÷ 4² × 4³', answer: '4096', hint: 'Use index laws' },
+                    { type: 'input', question: 'Evaluate: 2⁶ × 2² ÷ 2⁴', answer: '16', hint: 'Add indices when multiplying, subtract when dividing' },
+                    
+                    // Expanding Brackets (FOIL method)
+                    { type: 'input', question: 'Expand: (x + 3)(x + 5)', answer: 'x^2+8x+15', hint: 'FOIL method' },
+                    { type: 'input', question: 'Expand: (x + 2)(x + 7)', answer: 'x^2+9x+14', hint: 'First, Outer, Inner, Last' },
+                    { type: 'input', question: 'Expand: (x - 3)(x + 4)', answer: 'x^2+x-12', hint: 'Watch the signs' },
+                    { type: 'input', question: 'Expand: (x + 1)(x - 6)', answer: 'x^2-5x-6', hint: 'Careful with negative terms' },
+                    { type: 'input', question: 'Expand: (2x + 1)(x + 3)', answer: '2x^2+7x+3', hint: 'Multiply each term' },
+                    { type: 'input', question: 'Expand: (x - 2)²', answer: 'x^2-4x+4', hint: '(a-b)² = a² - 2ab + b²' },
+                    { type: 'input', question: 'Expand: (x + 4)²', answer: 'x^2+8x+16', hint: '(a+b)² = a² + 2ab + b²' },
+                    { type: 'input', question: 'Expand: (3x + 2)(x - 1)', answer: '3x^2-x-2', hint: 'Multiply each term carefully' },
+                    { type: 'input', question: 'Expand: (x - 5)(x + 3)', answer: 'x^2-2x-15', hint: 'FOIL method with negatives' },
+                    { type: 'input', question: 'Expand: (2x - 3)(x + 4)', answer: '2x^2+5x-12', hint: 'Multiply each term' },
+                    
+                    // Quadratic Equations
+                    { type: 'input', question: 'Solve: x² - 5x + 6 = 0 (smaller solution)', answer: '2', hint: 'Factor or use quadratic formula' },
+                    { type: 'input', question: 'Solve: x² - 7x + 12 = 0 (smaller solution)', answer: '3', hint: 'Factor the quadratic' },
+                    { type: 'input', question: 'Solve: x² + 6x + 8 = 0 (smaller solution)', answer: '-4', hint: 'Factor the quadratic' },
+                    { type: 'input', question: 'Solve: x² - 9x + 20 = 0 (smaller solution)', answer: '4', hint: 'Factor the quadratic' },
+                    { type: 'input', question: 'Solve: x² + 5x - 6 = 0 (smaller solution)', answer: '-6', hint: 'Factor the quadratic' },
+                    
+                    // Simultaneous Equations
+                    { type: 'input', question: 'If 3x + 2y = 18 and x - y = 1, find x', answer: '4', hint: 'Substitution method' },
+                    { type: 'input', question: 'If 2x + y = 11 and x + y = 7, find x', answer: '4', hint: 'Subtract equations' },
+                    { type: 'input', question: 'If x + 2y = 13 and 3x - y = 8, find y', answer: '5', hint: 'Elimination method' },
+                    { type: 'input', question: 'If 4x + y = 17 and 2x - y = 1, find x', answer: '3', hint: 'Add the equations' },
+                    { type: 'input', question: 'If 5x - 2y = 16 and x + y = 5, find y', answer: '2', hint: 'Use substitution' },
+                    { type: 'input', question: 'If 3x + 4y = 25 and 2x - y = 3, find x', answer: '5', hint: 'Elimination method' },
+                    { type: 'input', question: 'If x + 3y = 16 and 2x + y = 11, find y', answer: '3', hint: 'Use elimination' },
+                    { type: 'input', question: 'If 4x - 3y = 7 and x + 2y = 8, find x', answer: '3', hint: 'Substitution method' },
+                    { type: 'input', question: 'If 2x + 5y = 23 and 3x - 2y = 4, find y', answer: '3', hint: 'Elimination method' },
+                    { type: 'input', question: 'If 5x + 2y = 19 and x - y = 1, find x', answer: '3', hint: 'Substitution method' },
+                    
+                    // Advanced Sequences
+                    { type: 'input', question: '50th term of sequence: 3, 7, 11, 15, ...', answer: '199', hint: 'nth term = 4n - 1' },
+                    { type: 'input', question: '20th term of sequence: 5, 8, 11, 14, ...', answer: '62', hint: 'nth term = 3n + 2' },
+                    { type: 'input', question: '30th term of sequence: 2, 7, 12, 17, ...', answer: '147', hint: 'nth term = 5n - 3' },
+                    { type: 'input', question: '15th term of sequence: 4, 9, 14, 19, ...', answer: '74', hint: 'nth term = 5n - 1' },
+                    { type: 'input', question: '25th term of sequence: 1, 6, 11, 16, ...', answer: '121', hint: 'nth term = 5n - 4' },
+                    { type: 'input', question: '40th term of sequence: 3, 8, 13, 18, ...', answer: '198', hint: 'nth term = 5n - 2' },
+                    { type: 'input', question: '35th term of sequence: 2, 9, 16, 23, ...', answer: '240', hint: 'nth term = 7n - 5' },
+                    { type: 'input', question: '28th term of sequence: 4, 11, 18, 25, ...', answer: '193', hint: 'nth term = 7n - 3' },
+                    { type: 'input', question: '45th term of sequence: 1, 8, 15, 22, ...', answer: '309', hint: 'nth term = 7n - 6' },
+                    { type: 'input', question: '32nd term of sequence: 5, 12, 19, 26, ...', answer: '222', hint: 'nth term = 7n - 2' },
+                    
+                    // Surface Area and Volume (complex shapes)
+                    { type: 'input', question: 'Surface area of cube with side 4cm', answer: '96', hint: '6 × side²' },
+                    { type: 'input', question: 'Surface area of cuboid 6×4×3cm', answer: '108', hint: '2(lw + lh + wh)' },
+                    { type: 'input', question: 'Volume of cylinder radius 3cm, height 8cm (π=3.14)', answer: '226.08', hint: 'πr²h' },
+                    { type: 'input', question: 'Surface area of cube with side 7cm', answer: '294', hint: '6 × 7²' },
+                    { type: 'input', question: 'Volume of pyramid base 6×6cm, height 9cm', answer: '108', hint: '⅓ × base area × height' },
+                    { type: 'input', question: 'Surface area of cuboid 8×5×4cm', answer: '184', hint: '2(lw + lh + wh)' },
+                    { type: 'input', question: 'Volume of cylinder radius 5cm, height 12cm (π=3.14)', answer: '942', hint: 'πr²h' },
+                    { type: 'input', question: 'Surface area of cube with side 9cm', answer: '486', hint: '6 × 9²' },
+                    { type: 'input', question: 'Volume of pyramid base 8×8cm, height 12cm', answer: '256', hint: '⅓ × base area × height' },
+                    { type: 'input', question: 'Surface area of cuboid 10×6×5cm', answer: '280', hint: '2(lw + lh + wh)' },
+                    
+                    // Advanced Geometry (circles and triangles)
+                    { type: 'input', question: 'Area of circle radius 8cm (π = 3.14)', answer: '200.96', hint: 'πr²' },
+                    { type: 'input', question: 'Circumference of circle radius 6cm (π = 3.14)', answer: '37.68', hint: '2πr' },
+                    { type: 'input', question: 'Area of triangle base 15cm, height 12cm', answer: '90', hint: '½ × base × height' },
+                    { type: 'input', question: 'Area of circle radius 10cm (π = 3.14)', answer: '314', hint: 'πr²' },
+                    { type: 'input', question: 'Circumference of circle radius 9cm (π = 3.14)', answer: '56.52', hint: '2πr' },
+                    { type: 'input', question: 'Area of triangle base 18cm, height 14cm', answer: '126', hint: '½ × base × height' },
+                    { type: 'input', question: 'Area of circle radius 12cm (π = 3.14)', answer: '452.16', hint: 'πr²' },
+                    { type: 'input', question: 'Circumference of circle radius 11cm (π = 3.14)', answer: '69.08', hint: '2πr' },
+                    { type: 'input', question: 'Area of triangle base 20cm, height 16cm', answer: '160', hint: '½ × base × height' },
+                    { type: 'input', question: 'Area of circle radius 15cm (π = 3.14)', answer: '706.5', hint: 'πr²' },
+                    
+                    // Advanced Percentages and Ratios
+                    { type: 'input', question: 'Compound interest: £1000 at 5% for 2 years', answer: '1102.5', hint: 'Year 1: 1000×1.05, Year 2: result×1.05' },
+                    { type: 'input', question: 'Reverse percentage: 80% = £240, find original', answer: '300', hint: '80% = 240, so 100% = 240÷0.8' },
+                    { type: 'input', question: 'Percentage change: £200 to £250', answer: '25', hint: 'Change = 50, original = 200, % = (50/200)×100' },
+                    { type: 'input', question: 'Compound interest: £800 at 6% for 3 years', answer: '952.81', hint: '800×1.06³' },
+                    { type: 'input', question: 'Reverse percentage: 60% = £180, find original', answer: '300', hint: '60% = 180, so 100% = 180÷0.6' },
+                    { type: 'input', question: 'Percentage change: £150 to £120', answer: '-20', hint: 'Change = -30, original = 150, % = (-30/150)×100' },
+                    { type: 'input', question: 'Compound interest: £1200 at 4% for 2 years', answer: '1297.92', hint: '1200×1.04²' },
+                    { type: 'input', question: 'Reverse percentage: 75% = £225, find original', answer: '300', hint: '75% = 225, so 100% = 225÷0.75' },
+                    { type: 'input', question: 'Percentage change: £300 to £360', answer: '20', hint: 'Change = 60, original = 300, % = (60/300)×100' },
+                    { type: 'input', question: 'Compound interest: £600 at 8% for 2 years', answer: '699.84', hint: '600×1.08²' }
+                ]
+            },
+            english: {
+                easy: [
+                    { type: 'mcq', question: 'Which punctuation ends: "Where did you go"', options: ['Question mark (?)', 'Full stop (.)', 'Exclamation mark (!)'], answer: 0 },
+                    { type: 'mcq', question: 'The dog wagged ___ tail', options: ['its', 'it\'s'], answer: 0 },
+                    { type: 'mcq', question: 'What word class is "quickly"?', options: ['Noun', 'Verb', 'Adverb', 'Adjective'], answer: 2 },
+                    { type: 'mcq', question: 'Which spelling is correct?', options: ['receive', 'recieve'], answer: 0 },
+                    { type: 'mcq', question: 'A word meaning the same as another:', options: ['Synonym', 'Antonym', 'Homophone'], answer: 0 }
+                ],
+                medium: [
+                    { type: 'mcq', question: '"Although it was raining, we went out" is:', options: ['Simple', 'Compound', 'Complex'], answer: 2 },
+                    { type: 'mcq', question: '"The trees whispered" uses:', options: ['Simile', 'Metaphor', 'Personification'], answer: 2 },
+                    { type: 'input', question: 'F in AFOREST stands for:', answer: 'facts', hint: 'Evidence-based' },
+                    { type: 'mcq', question: '"The ball was kicked" is:', options: ['Active voice', 'Passive voice'], answer: 1 },
+                    { type: 'input', question: 'A 14-line poem is called:', answer: 'sonnet', hint: 'Shakespeare wrote many' }
+                ],
+                hard: [
+                    { type: 'mcq', question: '"Although it was raining" is a:', options: ['Main clause', 'Subordinate clause', 'Relative clause'], answer: 1 },
+                    { type: 'input', question: 'Literary term for sound words (buzz):', answer: 'onomatopoeia', hint: 'Greek origin' },
+                    { type: 'mcq', question: 'Shakespeare\'s meter was:', options: ['Iambic pentameter', 'Free verse', 'Haiku'], answer: 0 },
+                    { type: 'input', question: 'PEE stands for:', answer: 'point evidence explanation', hint: 'Paragraph structure' },
+                    { type: 'input', question: 'Exaggeration for effect:', answer: 'hyperbole', hint: 'I\'ve told you a million times' }
+                ]
+            },
+            science: {
+                easy: [
+                    { type: 'mcq', question: 'Part responsible for photosynthesis:', options: ['Nucleus', 'Chloroplast', 'Mitochondria', 'Vacuole'], answer: 1 },
+                    { type: 'input', question: 'M in MRS GREN stands for:', answer: 'movement', hint: 'All living things can...' },
+                    { type: 'input', question: 'Chemical symbol for water:', answer: 'H2O', hint: '2 hydrogen, 1 oxygen' },
+                    { type: 'mcq', question: 'Force pulling to Earth:', options: ['Friction', 'Gravity', 'Magnetism', 'Air resistance'], answer: 1 },
+                    { type: 'input', question: 'Hours for Earth to rotate once:', answer: '24', hint: 'One day' }
+                ],
+                medium: [
+                    { type: 'input', question: 'pH of neutral solution:', answer: '7', hint: 'Middle of scale' },
+                    { type: 'input', question: 'Products of neutralisation:', answer: 'salt and water', hint: 'Acid + alkali' },
+                    { type: 'mcq', question: 'Separate salt from water:', options: ['Filtration', 'Evaporation', 'Magnetism'], answer: 1 },
+                    { type: 'input', question: 'Unit of voltage:', answer: 'volt', hint: 'V' },
+                    { type: 'input', question: 'Green plants are:', answer: 'producers', hint: 'Make own food' }
+                ],
+                hard: [
+                    { type: 'input', question: 'Photosynthesis equation (simple):', answer: '6CO2+6H2O=C6H12O6+6O2', hint: 'Balanced equation' },
+                    { type: 'input', question: 'Tt × Tt: % of tt offspring:', answer: '25', hint: 'Punnett square' },
+                    { type: 'input', question: 'Force when m=1000kg, a=4m/s²:', answer: '4000', hint: 'F=ma' },
+                    { type: 'input', question: 'Electronic configuration of Cl (17):', answer: '2,8,7', hint: 'Shells: 2,8,8...' },
+                    { type: 'input', question: 'Wave speed: f=440Hz, λ=0.75m:', answer: '330', hint: 'v=fλ' }
+                ]
+            }
+        };
+
+        // Application state
+        const appState = {
+            currentSubject: 'maths',
+            currentDifficulty: 'easy',
+            currentQuestions: [],
+            questionHistory: new Map(), // Track recently used questions by subject-difficulty
+            lastQuestionSet: null,
+            timerInterval: null,
+            seconds: 0,
+            minutes: 0,
+            stats: {
+                totalAttempted: 0,
+                totalScore: 0,
+                bestScore: 0,
+                currentStreak: 0
+            },
+            isChecked: false
+        };
+
+        // Utility functions
+        const utils = {
+            // Safely get element by ID
+            getElement: (id) => {
+                const element = document.getElementById(id);
+                if (!element) {
+                    console.error(`Element with id '${id}' not found`);
+                }
+                return element;
+            },
+            
+            // Shuffle array using Fisher-Yates algorithm
+            shuffleArray: (array) => {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            },
+            
+            // Generate a unique hash for a question to track usage
+            generateQuestionHash: (question) => {
+                const key = `${question.type}-${question.question}-${question.answer}`;
+                // Simple hash function for performance
+                let hash = 0;
+                for (let i = 0; i < key.length; i++) {
+                    const char = key.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // Convert to 32-bit integer
+                }
+                return Math.abs(hash).toString(36);
+            },
+            
+            // Sanitize HTML to prevent XSS
+            sanitizeHTML: (str) => {
+                const temp = document.createElement('div');
+                temp.textContent = str;
+                return temp.innerHTML;
+            },
+            
+            // Debounce function for performance
+            debounce: (func, wait) => {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+        };
+
+        // Load stats from localStorage with error handling
+        function loadStats() {
+            try {
+                const saved = localStorage.getItem('worksheetStats');
+                if (saved) {
+                    const parsedStats = JSON.parse(saved);
+                    // Validate the loaded stats structure
+                    if (parsedStats && typeof parsedStats === 'object') {
+                        appState.stats = {
+                            totalAttempted: parsedStats.totalAttempted || 0,
+                            totalScore: parsedStats.totalScore || 0,
+                            bestScore: parsedStats.bestScore || 0,
+                            currentStreak: parsedStats.currentStreak || 0
+                        };
+                        updateStatsDisplay();
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                // Reset to default stats if loading fails
+                appState.stats = {
+                    totalAttempted: 0,
+                    totalScore: 0,
+                    bestScore: 0,
+                    currentStreak: 0
+                };
+            }
+        }
+
+        // Save stats to localStorage
+        function saveStats() {
+            try {
+                localStorage.setItem('worksheetStats', JSON.stringify(appState.stats));
+            } catch (error) {
+                console.error('Error saving stats:', error);
+            }
+        }
+
+        // Update stats display
+        function updateStatsDisplay() {
+            const elements = {
+                totalAttempted: utils.getElement('totalAttempted'),
+                avgScore: utils.getElement('avgScore'),
+                bestScore: utils.getElement('bestScore'),
+                streak: utils.getElement('streak'),
+                statsDisplay: utils.getElement('statsDisplay')
+            };
+            
+            if (elements.totalAttempted) {
+                elements.totalAttempted.textContent = appState.stats.totalAttempted;
+            }
+            if (elements.avgScore) {
+                elements.avgScore.textContent = appState.stats.totalAttempted > 0 ? 
+                    Math.round(appState.stats.totalScore / appState.stats.totalAttempted) + '%' : '0%';
+            }
+            if (elements.bestScore) {
+                elements.bestScore.textContent = appState.stats.bestScore + '%';
+            }
+            if (elements.streak) {
+                elements.streak.textContent = appState.stats.currentStreak;
+            }
+            if (elements.statsDisplay) {
+                elements.statsDisplay.style.display = 'grid';
+            }
+        }
+
+        // Get count of available questions for a subject-difficulty combination
+        function getAvailableQuestionCount(subject, difficulty) {
+            if (difficulty === 'mixed') {
+                return (
+                    questionBank[subject].easy.length +
+                    questionBank[subject].medium.length +
+                    questionBank[subject].hard.length
+                );
+            }
+            return questionBank[subject][difficulty]?.length || 0;
+        }
+        
+        // Ensure questions are unique within the current set
+        function ensureQuestionUniqueness(questions) {
+            const seen = new Set();
+            const unique = [];
+            
+            for (const question of questions) {
+                const hash = utils.generateQuestionHash(question);
+                if (!seen.has(hash)) {
+                    seen.add(hash);
+                    unique.push(question);
+                }
+            }
+            
+            return unique;
+        }
+        
+        // Enhanced random question selection with intelligent distribution
+        function getRandomQuestions(subject, difficulty, count) {
+            let pool = [];
+            const historyKey = `${subject}-${difficulty}`;
+            
+            // Build question pool based on difficulty
+            if (difficulty === 'mixed') {
+                pool = [
+                    ...questionBank[subject].easy,
+                    ...questionBank[subject].medium,
+                    ...questionBank[subject].hard
+                ];
+            } else {
+                pool = questionBank[subject][difficulty] || [];
+            }
+            
+            // If pool is too small, we need to handle this intelligently
+            if (pool.length < count) {
+                // For small pools, we'll allow some repetition but ensure variety
+                const availableQuestions = [...pool];
+                const selectedQuestions = [];
+                
+                // First pass: select all available unique questions
+                for (let i = 0; i < Math.min(count, availableQuestions.length); i++) {
+                    const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+                    selectedQuestions.push(availableQuestions.splice(randomIndex, 1)[0]);
+                }
+                
+                // Second pass: fill remaining slots with random selections from full pool
+                while (selectedQuestions.length < count) {
+                    const randomQuestion = pool[Math.floor(Math.random() * pool.length)];
+                    selectedQuestions.push({...randomQuestion}); // Clone to avoid reference issues
+                }
+                
+                return selectedQuestions;
+            }
+            
+            // For adequate pool sizes, use intelligent selection
+            const availableQuestions = pool.filter(q => {
+                const questionHash = utils.generateQuestionHash(q);
+                const history = appState.questionHistory.get(historyKey) || [];
+                return !history.includes(questionHash);
+            });
+            
+            // If we don't have enough unused questions, clear some history
+            if (availableQuestions.length < count) {
+                const history = appState.questionHistory.get(historyKey) || [];
+                // Keep only the most recent 30% of history to allow some repetition
+                const keepCount = Math.floor(history.length * 0.3);
+                const newHistory = history.slice(-keepCount);
+                appState.questionHistory.set(historyKey, newHistory);
+                
+                // Re-filter available questions
+                const freshAvailable = pool.filter(q => {
+                    const questionHash = utils.generateQuestionHash(q);
+                    return !newHistory.includes(questionHash);
+                });
+                
+                if (freshAvailable.length >= count) {
+                    availableQuestions.length = 0;
+                    availableQuestions.push(...freshAvailable);
+                }
+            }
+            
+            // Select questions with intelligent distribution
+            const selectedQuestions = [];
+            const shuffledPool = utils.shuffleArray(availableQuestions.length > 0 ? availableQuestions : pool);
+            
+            for (let i = 0; i < count; i++) {
+                if (shuffledPool[i]) {
+                    selectedQuestions.push(shuffledPool[i]);
+                }
+            }
+            
+            // Update history with selected questions
+            const questionHashes = selectedQuestions.map(q => utils.generateQuestionHash(q));
+            const currentHistory = appState.questionHistory.get(historyKey) || [];
+            const updatedHistory = [...currentHistory, ...questionHashes];
+            
+            // Keep history manageable (max 50 entries per subject-difficulty)
+            if (updatedHistory.length > 50) {
+                updatedHistory.splice(0, updatedHistory.length - 50);
+            }
+            
+            appState.questionHistory.set(historyKey, updatedHistory);
+            
+            return selectedQuestions;
+        }
+
+        // Generate new questions with enhanced randomization and validation
+        function generateNewQuestions() {
+            const numQuestionsInput = utils.getElement('numQuestions');
+            const numQuestions = parseInt(numQuestionsInput?.value || 10);
+            
+            // Validate input
+            if (isNaN(numQuestions) || numQuestions < 1 || numQuestions > 10) {
+                alert('Please enter a valid number of questions (1-10)');
+                return;
+            }
+            
+            showLoading(true);
+            
+            // Use requestAnimationFrame for better performance
+            requestAnimationFrame(() => {
+                try {
+                    // Validate that we have enough questions available
+                    const availableQuestions = getAvailableQuestionCount(
+                        appState.currentSubject, 
+                        appState.currentDifficulty
+                    );
+                    
+                    if (availableQuestions < numQuestions) {
+                        console.warn(`Requested ${numQuestions} questions but only ${availableQuestions} available`);
+                    }
+                    
+                    // Generate questions with intelligent randomization
+                    appState.currentQuestions = getRandomQuestions(
+                        appState.currentSubject, 
+                        appState.currentDifficulty, 
+                        numQuestions
+                    );
+                    
+                    if (appState.currentQuestions.length === 0) {
+                        throw new Error('No questions available for this subject/difficulty');
+                    }
+                    
+                    // Ensure we have unique questions
+                    const uniqueQuestions = ensureQuestionUniqueness(appState.currentQuestions);
+                    if (uniqueQuestions.length !== appState.currentQuestions.length) {
+                        console.warn('Duplicate questions detected and removed');
+                        appState.currentQuestions = uniqueQuestions;
+                    }
+                    
+                    // Log randomization quality for debugging
+                    const stats = getRandomizationStats();
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                        console.log('Randomization stats:', stats);
+                        console.log('Generated questions:', appState.currentQuestions.length);
+                    }
+                    
+                    loadQuestions();
+                    resetQuiz();
+                    showLoading(false);
+                } catch (error) {
+                    console.error('Error generating questions:', error);
+                    showLoading(false);
+                    alert('Error generating questions. Please try again.');
+                }
+            });
+        }
+
+        // Show/hide loading spinner
+        function showLoading(show) {
+            const loading = utils.getElement('loading');
+            if (loading) {
+                loading.classList.toggle('show', show);
+            }
+        }
+        
+        // Get randomization statistics for debugging and user feedback
+        function getRandomizationStats() {
+            const historyKey = `${appState.currentSubject}-${appState.currentDifficulty}`;
+            const history = appState.questionHistory.get(historyKey) || [];
+            const totalAvailable = getAvailableQuestionCount(appState.currentSubject, appState.currentDifficulty);
+            const recentlyUsed = history.length;
+            const uniqueUsed = new Set(history).size;
+            
+            return {
+                totalAvailable,
+                recentlyUsed,
+                uniqueUsed,
+                varietyPercentage: totalAvailable > 0 ? Math.round((uniqueUsed / totalAvailable) * 100) : 0
+            };
+        }
+
+        // Load questions into DOM with error handling
+        function loadQuestions() {
+            const container = utils.getElement(`${appState.currentSubject}-questions`);
+            if (!container) {
+                console.error('Question container not found for subject:', appState.currentSubject);
+                return;
+            }
+            
+            container.innerHTML = '';
+            const hintsEnabled = utils.getElement('hintsEnabled')?.value === 'yes';
+            
+            if (!appState.currentQuestions || appState.currentQuestions.length === 0) {
+                container.innerHTML = '<p>No questions available. Please try generating new questions.</p>';
+                return;
+            }
+            
+            appState.currentQuestions.forEach((q, index) => {
+                try {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = `question-container ${appState.currentSubject}`;
+                    questionDiv.setAttribute('role', 'listitem');
+                    
+                    const questionNumber = document.createElement('div');
+                    questionNumber.className = 'question-number';
+                    questionNumber.textContent = `Q${index + 1}`;
+                    
+                    const questionContent = document.createElement('div');
+                    questionContent.className = 'question';
+                    questionContent.textContent = q.question || 'Question text missing';
+                    
+                    questionDiv.appendChild(questionNumber);
+                    questionDiv.appendChild(questionContent);
+                    
+                    if (q.type === 'input') {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.className = 'answer-input';
+                        input.dataset.answer = q.answer || '';
+                        input.placeholder = 'Enter your answer';
+                        input.setAttribute('aria-label', `Answer for question ${index + 1}`);
+                        questionDiv.appendChild(input);
+                        
+                        if (hintsEnabled && q.hint) {
+                            const hintBtn = document.createElement('button');
+                            hintBtn.className = 'hint-btn';
+                            hintBtn.textContent = '💡 Hint';
+                            hintBtn.onclick = () => showHint(hintBtn);
+                            hintBtn.setAttribute('aria-label', `Show hint for question ${index + 1}`);
+                            
+                            const hintDiv = document.createElement('div');
+                            hintDiv.className = 'hint';
+                            hintDiv.textContent = q.hint;
+                            
+                            questionDiv.appendChild(hintBtn);
+                            questionDiv.appendChild(hintDiv);
+                        }
+                    } else if (q.type === 'mcq') {
+                        const optionsContainer = document.createElement('div');
+                        optionsContainer.className = 'mcq-options';
+                        optionsContainer.dataset.answer = q.answer || 0;
+                        
+                        if (q.options && Array.isArray(q.options)) {
+                            q.options.forEach((opt, i) => {
+                                const option = document.createElement('div');
+                                option.className = 'mcq-option';
+                                option.dataset.index = i;
+                                option.textContent = opt;
+                                option.onclick = () => selectMCQ(option);
+                                option.setAttribute('role', 'button');
+                                option.setAttribute('tabindex', '0');
+                                option.setAttribute('aria-label', `Option ${i + 1}: ${opt}`);
+                                
+                                // Add keyboard support
+                                option.onkeypress = (e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        selectMCQ(option);
+                                    }
+                                };
+                                
+                                optionsContainer.appendChild(option);
+                            });
+                        }
+                        
+                        questionDiv.appendChild(optionsContainer);
+                    }
+                    
+                    const feedback = document.createElement('div');
+                    feedback.className = 'feedback';
+                    feedback.setAttribute('role', 'status');
+                    feedback.setAttribute('aria-live', 'polite');
+                    questionDiv.appendChild(feedback);
+                    
+                    container.appendChild(questionDiv);
+                } catch (error) {
+                    console.error('Error creating question element:', error, q);
+                }
+            });
+        }
+
+        // Timer functions
+        function startTimer() {
+            clearInterval(appState.timerInterval);
+            appState.seconds = 0;
+            appState.minutes = 0;
+            
+            const timerMode = utils.getElement('timerMode')?.value;
+            
+            appState.timerInterval = setInterval(() => {
+                appState.seconds++;
+                if (appState.seconds >= 60) {
+                    appState.seconds = 0;
+                    appState.minutes++;
+                }
+                
+                if (timerMode === 'timed') {
+                    const numQuestions = parseInt(utils.getElement('numQuestions')?.value || 10);
+                    const timeLimit = numQuestions;
+                    
+                    if (appState.minutes >= timeLimit) {
+                        clearInterval(appState.timerInterval);
+                        checkAnswers();
+                        alert(`Time's up! ${timeLimit} minutes reached.`);
+                    }
+                }
+                
+                const timerElement = utils.getElement('timer');
+                if (timerElement) {
+                    timerElement.textContent = 
+                        `Time: ${appState.minutes.toString().padStart(2, '0')}:${appState.seconds.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        // Switch subject with enhanced question management
+        function switchSubject(subject, button) {
+            if (!button || !questionBank[subject]) {
+                console.error('Invalid subject or button:', subject);
+                return;
+            }
+            
+            // Update UI
+            document.querySelectorAll('.subject-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+                tab.setAttribute('aria-pressed', 'false');
+            });
+            
+            const subjectSection = utils.getElement(subject);
+            if (subjectSection) {
+                subjectSection.classList.add('active');
+            }
+            button.classList.add('active');
+            button.setAttribute('aria-pressed', 'true');
+            
+            // Update state and clear current questions
+            appState.currentSubject = subject;
+            appState.currentDifficulty = 'easy';
+            appState.currentQuestions = [];
+            
+            // Reset difficulty buttons
+            document.querySelectorAll(`#${subject} .diff-btn`).forEach(btn => {
+                btn.classList.remove('active', 'easy', 'medium', 'hard', 'mixed');
+                btn.setAttribute('aria-pressed', 'false');
+            });
+            const easyBtn = document.querySelector(`#${subject} .diff-btn`);
+            if (easyBtn) {
+                easyBtn.classList.add('active', 'easy');
+                easyBtn.setAttribute('aria-pressed', 'true');
+            }
+            
+            // Generate fresh questions for new subject
+            generateNewQuestions();
+        }
+
+        // Switch difficulty with enhanced question management
+        function switchDifficulty(subject, difficulty, button) {
+            if (!button || !questionBank[subject] || !questionBank[subject][difficulty]) {
+                console.error('Invalid difficulty or button:', subject, difficulty);
+                return;
+            }
+            
+            document.querySelectorAll(`#${subject} .diff-btn`).forEach(btn => {
+                btn.classList.remove('active', 'easy', 'medium', 'hard', 'mixed');
+                btn.setAttribute('aria-pressed', 'false');
+            });
+            button.classList.add('active', difficulty);
+            button.setAttribute('aria-pressed', 'true');
+            
+            appState.currentDifficulty = difficulty;
+            appState.currentQuestions = []; // Clear current questions
+            
+            // Generate fresh questions for new difficulty
+            generateNewQuestions();
+        }
+
+        // Select MCQ option
+        function selectMCQ(option) {
+            if (!option) return;
+            
+            const container = option.closest('.mcq-options');
+            if (!container) return;
+            
+            container.querySelectorAll('.mcq-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            option.classList.add('selected');
+        }
+
+        // Show hint
+        function showHint(button) {
+            if (!button) return;
+            
+            const hint = button.nextElementSibling;
+            if (hint && hint.classList.contains('hint')) {
+                hint.classList.toggle('show');
+            }
+        }
+
+        // Check answers
+        function checkAnswers() {
+            if (appState.isChecked) return;
+            
+            const containers = document.querySelectorAll(`#${appState.currentSubject}-questions .question-container`);
+            let correct = 0;
+            const total = containers.length;
+            
+            containers.forEach(container => {
+                const input = container.querySelector('.answer-input');
+                const mcqContainer = container.querySelector('.mcq-options');
+                const feedback = container.querySelector('.feedback');
+                
+                if (!feedback) return;
+                
+                if (input) {
+                    const userAnswer = input.value.toLowerCase().replace(/\s/g, '');
+                    const correctAnswer = input.dataset.answer.toLowerCase().replace(/\s/g, '');
+                    
+                    if (userAnswer === correctAnswer) {
+                        input.classList.add('correct');
+                        input.classList.remove('incorrect');
+                        feedback.textContent = '✓ Correct! Well done!';
+                        feedback.className = 'feedback correct show';
+                        correct++;
+                    } else {
+                        input.classList.add('incorrect');
+                        input.classList.remove('correct');
+                        feedback.textContent = `✗ Incorrect. The answer is: ${input.dataset.answer}`;
+                        feedback.className = 'feedback incorrect show';
+                    }
+                } else if (mcqContainer) {
+                    const selected = mcqContainer.querySelector('.mcq-option.selected');
+                    const correctIndex = parseInt(mcqContainer.dataset.answer);
+                    const correctOption = mcqContainer.querySelectorAll('.mcq-option')[correctIndex];
+                    
+                    if (selected && parseInt(selected.dataset.index) === correctIndex) {
+                        selected.classList.add('correct');
+                        selected.classList.remove('incorrect');
+                        feedback.textContent = '✓ Correct! Excellent!';
+                        feedback.className = 'feedback correct show';
+                        correct++;
+                    } else {
+                        if (selected) {
+                            selected.classList.add('incorrect');
+                        }
+                        if (correctOption) {
+                            correctOption.classList.add('correct');
+                        }
+                        feedback.textContent = '✗ Incorrect. See the correct answer highlighted.';
+                        feedback.className = 'feedback incorrect show';
+                    }
+                }
+            });
+            
+            // Update stats
+            const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
+            appState.stats.totalAttempted++;
+            appState.stats.totalScore += percentage;
+            if (percentage > appState.stats.bestScore) {
+                appState.stats.bestScore = percentage;
+            }
+            if (percentage === 100) {
+                appState.stats.currentStreak++;
+            } else {
+                appState.stats.currentStreak = 0;
+            }
+            
+            saveStats();
+            updateStatsDisplay();
+            
+            // Display score
+            const scoreDisplay = utils.getElement('scoreDisplay');
+            if (scoreDisplay) {
+                scoreDisplay.innerHTML = `
+                    🎯 Score: ${correct}/${total} (${percentage}%)<br>
+                    ⏱️ Time: ${appState.minutes}:${appState.seconds.toString().padStart(2, '0')}
+                `;
+                scoreDisplay.classList.add('show');
+            }
+            
+            // Show achievement
+            const achievement = utils.getElement('achievement');
+            if (achievement) {
+                achievement.classList.remove('show');
+                
+                if (percentage === 100) {
+                    achievement.textContent = '🏆 PERFECT SCORE! You\'re a superstar!';
+                    achievement.classList.add('show');
+                } else if (percentage >= 80) {
+                    achievement.textContent = '🌟 EXCELLENT! Keep up the great work!';
+                    achievement.classList.add('show');
+                } else if (percentage >= 60) {
+                    achievement.textContent = '👍 GOOD JOB! You\'re getting there!';
+                    achievement.classList.add('show');
+                }
+            }
+            
+            // Update progress bar
+            updateProgress(percentage);
+            appState.isChecked = true;
+        }
+
+        // Reset quiz with better state management
+        function resetQuiz() {
+            appState.isChecked = false;
+            
+            // Stop and restart timer
+            clearInterval(appState.timerInterval);
+            appState.seconds = 0;
+            appState.minutes = 0;
+            
+            // Clear all inputs
+            document.querySelectorAll('.answer-input').forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+            });
+            
+            // Clear all MCQ selections
+            document.querySelectorAll('.mcq-option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Hide all feedback
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.classList.remove('show');
+                feedback.textContent = '';
+            });
+            
+            // Hide all hints
+            document.querySelectorAll('.hint').forEach(hint => {
+                hint.classList.remove('show');
+            });
+            
+            // Hide score and achievement
+            const scoreDisplay = utils.getElement('scoreDisplay');
+            if (scoreDisplay) {
+                scoreDisplay.classList.remove('show');
+            }
+            
+            const achievement = utils.getElement('achievement');
+            if (achievement) {
+                achievement.classList.remove('show');
+            }
+            
+            // Reset timer and progress
+            startTimer();
+            updateProgress(0);
+        }
+
+        // Show all answers
+        function showAllAnswers() {
+            const containers = document.querySelectorAll(`#${appState.currentSubject}-questions .question-container`);
+            
+            containers.forEach(container => {
+                const input = container.querySelector('.answer-input');
+                const mcqContainer = container.querySelector('.mcq-options');
+                const feedback = container.querySelector('.feedback');
+                
+                if (!feedback) return;
+                
+                if (input) {
+                    feedback.textContent = `Answer: ${input.dataset.answer}`;
+                    feedback.className = 'feedback correct show';
+                    input.value = input.dataset.answer;
+                    input.classList.add('correct');
+                } else if (mcqContainer) {
+                    const correctIndex = parseInt(mcqContainer.dataset.answer);
+                    const correctOption = mcqContainer.querySelectorAll('.mcq-option')[correctIndex];
+                    if (correctOption) {
+                        correctOption.classList.add('correct');
+                        feedback.textContent = 'Correct answer highlighted above';
+                        feedback.className = 'feedback correct show';
+                    }
+                }
+            });
+            
+            appState.isChecked = true;
+        }
+
+        // Update progress bar
+        function updateProgress(percentage = 0) {
+            const progressFill = utils.getElement('progress');
+            const progressBar = document.querySelector('.progress-bar');
+            
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+                progressFill.textContent = percentage > 0 ? percentage + '%' : '0%';
+            }
+            
+            if (progressBar) {
+                progressBar.setAttribute('aria-valuenow', percentage);
+            }
+        }
+
+        // Keyboard navigation support
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                // Tab navigation enhancement
+                if (e.key === 'Tab') {
+                    const focusable = document.querySelectorAll(
+                        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                    );
+                    if (focusable.length === 0) return;
+                    
+                    const currentIndex = Array.from(focusable).indexOf(document.activeElement);
+                    if (currentIndex === -1) {
+                        focusable[0].focus();
+                        e.preventDefault();
+                    }
+                }
+                
+                // Shortcuts
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key) {
+                        case 'n': // New questions
+                            e.preventDefault();
+                            generateNewQuestions();
+                            break;
+                        case 'Enter': // Check answers
+                            e.preventDefault();
+                            checkAnswers();
+                            break;
+                        case 'r': // Reset
+                            e.preventDefault();
+                            resetQuiz();
+                            break;
+                    }
+                }
+            });
+        }
+
+        // Error handling
+        window.addEventListener('error', (e) => {
+            console.error('Application error:', e.error);
+            // You could show a user-friendly error message here
+        });
+
+        // Performance optimization - lazy load images if any
+        function lazyLoadImages() {
+            const images = document.querySelectorAll('img[data-src]');
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            images.forEach(img => imageObserver.observe(img));
+        }
+
+        // Service Worker registration for offline support (optional)
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.log('Service Worker registration failed:', err);
+                });
+            }
+        }
+
+        // Initialize application
+        function init() {
+            // Load saved stats
+            loadStats();
+            
+            // Set initial state
+            appState.currentSubject = 'maths';
+            appState.currentDifficulty = 'easy';
+            
+            // Generate initial questions
+            generateNewQuestions();
+            
+            // Start timer
+            startTimer();
+            
+            // Setup keyboard navigation
+            setupKeyboardNavigation();
+            
+            // Setup lazy loading
+            lazyLoadImages();
+            
+            // Register service worker (optional)
+            // registerServiceWorker();
+            
+            // Add event listeners for settings changes
+            const settingsInputs = document.querySelectorAll('.setting-group input, .setting-group select');
+            settingsInputs.forEach(input => {
+                input.addEventListener('change', utils.debounce(() => {
+                    if (input.id === 'numQuestions') {
+                        generateNewQuestions();
+                    }
+                }, 500));
+            });
+            
+            // Print functionality
+            window.addEventListener('beforeprint', () => {
+                document.body.classList.add('printing');
+            });
+            
+            window.addEventListener('afterprint', () => {
+                document.body.classList.remove('printing');
+            });
+            
+            // Add debug logging for randomization (remove in production)
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.log('Randomization system initialized with enhanced question management');
+                console.log('Available subjects:', Object.keys(questionBank));
+                console.log('Maths easy questions:', questionBank.maths.easy.length);
+                console.log('Maths medium questions:', questionBank.maths.medium.length);
+                console.log('Maths hard questions:', questionBank.maths.hard.length);
+            }
+        }
+
+        // Wait for DOM to be fully loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
